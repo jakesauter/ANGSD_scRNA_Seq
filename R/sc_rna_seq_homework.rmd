@@ -15,7 +15,8 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE, 
                       message = FALSE, 
-                      comment = NA)
+                      comment = NA, 
+                      cache = TRUE)
 
 library(knitr)
 library(magrittr)

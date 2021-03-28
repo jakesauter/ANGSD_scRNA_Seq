@@ -4,7 +4,6 @@ A report by **Jake Sauter**
 
 date: 3/26/2021
 
-
 ## **Loading the Data**
 
 The file `data/WT-1.dge.txt` will be used during this assignment for demonstrating various Bioconductor objects and methods. A sparse matrix will be used to store this data as there are relatively few non-zero entries in comparison to zero entries.
@@ -187,14 +186,14 @@ colData(sce) %>%
 
 
 
-|barcode      |cell_name  |
-|:------------|:----------|
-|GGTCCAGATCAT |deeppink2  |
-|CCCCCATTATGC |slateblue4 |
-|TTTACCTAACAG |gray40     |
-|ATTCCCGAGTCA |mistyrose4 |
-|ATTCATTCTTTG |indianred4 |
-|GTCTTCTCCCAT |gray7      |
+|barcode      |cell_name      |
+|:------------|:--------------|
+|GGTCCAGATCAT |darkgray       |
+|CCCCCATTATGC |palevioletred3 |
+|TTTACCTAACAG |rosybrown2     |
+|ATTCCCGAGTCA |mistyrose2     |
+|ATTCATTCTTTG |slategray1     |
+|GTCTTCTCCCAT |skyblue        |
 
 ## **Scater Workflow**
 
@@ -222,7 +221,7 @@ sce %>%
   ylab('Number of Detected Features (by Cell)')
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 We see that as we expect, as more UMIs are detected per cell, more features (genes / transcripts) are also detected per cell, a good sign of the viability of the cell's sequenced.
 
@@ -243,7 +242,7 @@ sce %>%
   geom_hline(aes(yintercept = 10), lty=2, col = 'red')
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 We see above that there does appear to be a subset of our cell population that contain many ​mitochondrial reads. Indicated by the red dotted line above, when processing this data I will choose to filter for cells that have **at least** less than 10% mitochondrial reads.
 
@@ -270,7 +269,7 @@ sce %>%
   ggtitle('Log_10 UMI Count Per Cell')
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 This histogram tells us that we have collected bewteen 100 and 1000 UMIs for most cells, with some cells yielding 10,000 UMIs, and some cells containing very few. The cells contining very few UMI may not be viable and will be filtered in the QC steps to follow. The red-dotted line indicates cells containing below 300 UMIs.
 
@@ -296,7 +295,7 @@ sce %>%
   ggtitle('Number Genes Expressed Per Cell') 
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 We see that on average, around 100 features are collected per cell, with a build-up of cells in which our assay returned fewer features. These cells in which fewer features were returned could have contained mainly mitochrondrial reads, or could be smaller, or dying cells. We hope to get rid of these cells by filtering for UMI count, and mitochondrial read percentage.
 
@@ -317,7 +316,7 @@ colData(sce) %>%
   ylab('Frequency')
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 We see that some cells contain a large portion of mitochondrial reads. This could be a bad sign for the other features in the cell, and thus we will filter for cells that have at least less than 10% mitochondrial reads (indicated by the red-dotted line), however we may choose to be even stricter than this by only allowing 3-5% of mitochondrial reads.
 
@@ -347,7 +346,7 @@ qc_sce <- sce[, cells_to_keep]
 
 **Using the filtered data set, normalize the counts using scran and scater and judge whether the size factors calculated by computeSumFactors show the expected behavior as shown in the figure below.**
 
-![](R/imagess/paste-F219327B.png){width="493"}
+![](R/images/paste-F219327B.png){width="493"}
 
 
 ```r
@@ -371,7 +370,7 @@ qc_sce %>%
   ylab('Size Factor')
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-16-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 This above graph may or may not show the expected behavior of the example plot above. Our size factors do not seem to be **as** clustered around one as in the example plot, however a large amount of cells do fall within a relatively close range of a size factor of one, leading me to believe more analysis required to undersand the underlying sizeFactor distribution.
 
@@ -427,7 +426,7 @@ pred1 %>%
   ylab('Frequency') 
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 ```r
 pred2 %>% 
@@ -442,7 +441,7 @@ pred2 %>%
                                    angle = -30))
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-18-2.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-18-2.png)<!-- -->
 
 **Heatmap of Potential Cell Types**
 
@@ -451,12 +450,12 @@ pred2 %>%
 plotScoreHeatmap(pred1)
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 ```r
 plotScoreHeatmap(pred2)
 ```
 
-![](R/BlueprintEncodeData/figure-html/unnamed-chunk-19-2.png)<!-- -->
+![](R/sc_rna_seq_homework_files/figure-html/unnamed-chunk-19-2.png)<!-- -->
 
 **Predicted Cell Type**: Although the `SingleR` analysis above predicts that our top cell type is a Human Embryonic Stem Cell, I believe that it would be more likely that induced Pluripotent Stem Cells (iPSCs) would be more likely, given the difficulty in obtaining Human Embryonic Stem Cells, as well as the strong evidence when we used `BlueprintEncodeData()` reference that our cells closely match Fibroblasts and peripheral blood cells, a common source of iPSCs. It is also possible that our `HumanPrimaryCellAtlasData` reference is not well aligned with our sample, and our `BlueprintEncodeData` reference is correctly in predicting that our cell population is composed of ertyhrocytes and fibroblasts.

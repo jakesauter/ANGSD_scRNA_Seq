@@ -195,14 +195,14 @@ colData(sce) %>%
 
 
 
-|barcode      |cell_name  |
-|:------------|:----------|
-|GGTCCAGATCAT |deeppink2  |
-|CCCCCATTATGC |slateblue4 |
-|TTTACCTAACAG |gray40     |
-|ATTCCCGAGTCA |mistyrose4 |
-|ATTCATTCTTTG |indianred4 |
-|GTCTTCTCCCAT |gray7      |
+|barcode      |cell_name      |
+|:------------|:--------------|
+|GGTCCAGATCAT |darkgray       |
+|CCCCCATTATGC |palevioletred3 |
+|TTTACCTAACAG |rosybrown2     |
+|ATTCCCGAGTCA |mistyrose2     |
+|ATTCATTCTTTG |slategray1     |
+|GTCTTCTCCCAT |skyblue        |
 
 ## **Scater Workflow**
 
